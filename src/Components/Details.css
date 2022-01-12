@@ -1,0 +1,15 @@
+.details_container{
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px;
+    background-color: rgb(246, 246, 246);
+}
+
+.calendar{
+    display: flex;
+    justify-content: center;
+}
+
+.title_details{
+    margin: 0 0 30px 0;
+}

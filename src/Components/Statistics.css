@@ -1,0 +1,70 @@
+.statistics_container{
+    height: 17rem;
+    background-color: rgb(240, 240, 240);
+    padding: 10px;    
+    position: relative;
+    text-align: center;
+}
+
+.charts{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    left: 0px; 
+    right: 0px; 
+    bottom: 0px;
+    padding: 3px;  
+}
+
+.char_container{
+    display: block;
+    text-align: center;
+    margin: 0 13px;
+}
+
+.inner_charts{
+    display: flex;
+    align-items: baseline;
+}
+
+.month_chart_expense{
+    cursor: pointer;
+    border-radius: 3px;
+    transform: rotate(180deg);
+    margin: 0 5px;
+    background-color: #faaf9d;
+    width: 45px;
+    height: 170px;
+    text-align: center;
+}
+
+.month_chart_expense:hover{
+    background-color: #ff9b82;
+}
+
+.month_chart_income{
+    cursor: pointer;
+    border-radius: 3px;
+    transform: rotate(180deg);
+    margin: 0 5px;
+    background-color: #c8fb68;
+    width: 45px;
+    height: 170px;
+    text-align: center;
+}
+
+.month_chart_income:hover{
+    background-color: #b6ff2d;
+}
+
+.form-select{
+    width: 100px !important;
+    margin: 0 15px 0 0;
+}
+
+.filters_chart{
+    text-align: left;
+    display: flex;
+}
+

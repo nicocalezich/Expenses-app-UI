@@ -1,0 +1,8 @@
+.expenses_container{
+    text-align: center;
+}
+
+.expenses_table{
+    width: 60%;
+    margin: 0 auto !important;
+}

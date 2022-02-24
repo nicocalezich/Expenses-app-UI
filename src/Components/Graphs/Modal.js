@@ -3,12 +3,12 @@ import { Button, Modal as BModal } from 'react-bootstrap'
 
 const Modal = (props) => {
     return (
-        <BModal show={props.showModal} onHide={props.handleCloseModal}>
+        <BModal show={props.showModal} onHide={() => props.setShowDayExpenses(false)}>
             <BModal.Header closeButton>
-                <BModal.Title>{`${props.day} de ${props.month}`}</BModal.Title>
+                <BModal.Title>{`${props.dayExpenses?.day} de ${props.dayExpenses?.month}`}</BModal.Title>
             </BModal.Header>
 
-            {props.expenses?.length === 0? <BModal.Body><h6>No se registraron gastos</h6></BModal.Body> : <BModal.Body>
+            {props.dayExpenses?.expenses?.length === 0 ? <BModal.Body><h6>No se registraron gastos</h6></BModal.Body> : <BModal.Body>
                 <table className="table">
                     <thead>
                         <tr>
@@ -17,17 +17,15 @@ const Modal = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {props.expenses?.map((expense) => <tr><td>{expense.name}</td><td>${expense.amount}</td></tr>)}                                       
+                        {props.dayExpenses?.expenses.map((expense) => <tr><td>{expense.name}</td><td>${expense.amount}</td></tr>)}
                     </tbody>
                 </table>
             </BModal.Body>}
 
             <BModal.Footer>
-                <Button onClick={props.handleCloseModal} variant="primary">Cerrar</Button>
-                {/* <Button variant="primary">Save changes</Button> */}
+                <Button onClick={() => props.setShowDayExpenses(false)} variant="primary">Cerrar</Button>
             </BModal.Footer>
         </BModal>
-
     )
 }
 

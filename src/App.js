@@ -1,114 +1,140 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './app.css'
-import AddExpense from "./Components/AddExpense"
-import Expenses from './Components/Expenses'
+import CreateExpense from "./Components/Header/CreateExpense"
+import Expenses from './Components/Activity/Expenses'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Statistics from './Components/Statistics'
-import Details from './Components/Details'
-import Modal from './Components/Modal'
-import ModalIngresos from './Components/ModalIngresos'
+import Statistics from './Components/Graphs/Statistics'
+import Details from './Components/Graphs/Details'
+import Modal from './Components/Graphs/Modal'
+import expensesService from './Services/Expenses'
+import incomeService from './Services/Income'
+import activityService from './Services/Activity'
+import settingsService from './Services/Settings'
+import NewExpenseModal from './Components/Header/NewExpenseModal'
+import NewIncomeModal from './Components/Header/NewIncomeModal'
+import ModalSetTop from './Components/Graphs/modalSetTop'
+
 
 function App() {
-  const [expenses, setExpense] = useState([])
-  const [filterExpenses, setFilterExpenses] = useState([])
-  const [showDetails, setShowDetails] = useState(false)
-  const [showModal, setShowModal] = useState(false)
-  const [showModalIncome, setShowModalIncome] = useState(false)
-  const [detailsExpensesMonth, setDetailsExpensesMonth] = useState([])
-  const [expensesSelectedDay, setExpensesSelectedDay] = useState()
-  const [monthSelectedDay, setMonthSelectedDay] = useState()
-  const [daySelectedDay, setDaySelectedDay] = useState()
-  const [eneroIncome, setEneroIncome] = useState(0)
-  const [febreroIncome, setFebreroIncome] = useState(0)
-  const [marzoIncome, setMarzoIncome] = useState(0)
-  const [abrilIncome, setAbrilIncome] = useState(0)
-  const [mayoIncome, setMayoIncome] = useState(0)
-  const [junioIncome, setJunioIncome] = useState(0)
-  const [julioIncome, setJulioIncome] = useState(0)
-  const [agostoIncome, setAgostoIncome] = useState(0)
-  const [septiembreIncome, setSeptiembreIncome] = useState(0)
-  const [octubreIncome, setOctubreIncome] = useState(0)
-  const [noviembreIncome, setNoviembreIncome] = useState(0)
-  const [diciembreIncome, setDiciembreIncome] = useState(0)
 
-  const handleShowModal = (expenses, month, day) => {
-    setExpensesSelectedDay(expenses)
-    setMonthSelectedDay(month)
-    setDaySelectedDay(day)
-    setShowModal(true)
+  const createExpense = async (expense) => {
+    await expensesService.post(expense)
+    await getExpenses()
+    await getAmountsPerMonth(expense.date.getFullYear())
+    if (showMonthExpenses) await handleSelectedMonth(selectedMonth)
+    setSelectedYear(expense.date.getFullYear())
+    await addActivity(expense, true)
+    await getActivity()
   }
 
-  const handleCloseModal = () => {
-    setShowModal(false)
+  const createIncome = async (income) => {
+    await incomeService.post(income)
+    await addActivity(income, false)
+    await getActivity()
+    await getIncomePerMonth(income.date.getFullYear())
   }
 
-  const handleOpenModalIncome = () => {
-    setShowModalIncome(true)
+  const addActivity = async (item, isExpense) => {
+    const activityItem = {...item, isExpense}
+    await activityService.post(activityItem)
+    await handleBalance(selectedMonth)
   }
 
-  const handleCloseModalIncome = () => {
-    setShowModalIncome(false)
+  const handleSelectedYear = async (year) => {
+    await getAmountsPerMonth(year)
+    await getIncomePerMonth(year)
+    setShowMonthExpenses(false)
+    setSelectedYear(year)
   }
 
-  const handleNewExpense = (newExpense) => {
-    setExpense((previusState) => {
-      return [...previusState, newExpense]
-    })
-    if (expenses.length === 0) {
-      setFilterExpenses([newExpense])
-    }
-    if (newExpense.date.getFullYear() === filterExpenses[filterExpenses.length - 1].date.getFullYear()) {
-      setFilterExpenses((previusState) => {
-        return [...previusState, newExpense]
-      })
-    }
-
+  const getExpenses = async () => {
+    const resp = await expensesService.get()
+    setExpenses(resp)
   }
 
-  const filterExpensesByYear = (year) => {
-    const filtrados = expenses.filter((expense) => expense.date.getFullYear() === parseInt(year))
-    setFilterExpenses(filtrados)
+  const getAmountsPerMonth = async (year) => {
+    const resp = await expensesService.getAmountsPerMonth({ year })
+    setAmountPerMonth(resp)
   }
 
-  const diasDelMes = (monthExpenses) => {
-    const mes = parseInt(monthExpenses[0].date.getMonth())
-    switch (mes) {
-      case 1: return { cant: 31, mes: "Enero" }
-      case 2: return { cant: 28, mes: "Febrero" }
-      case 3: return { cant: 31, mes: "Marzo" }
-      case 4: return { cant: 30, mes: "Abril" }
-      case 5: return { cant: 31, mes: "Mayo" }
-      case 6: return { cant: 30, mes: "Junio" }
-      case 7: return { cant: 31, mes: "Julio" }
-      case 8: return { cant: 31, mes: "Agosto" }
-      case 9: return { cant: 30, mes: "Septiembre" }
-      case 10: return { cant: 31, mes: "Octubre" }
-      case 11: return { cant: 30, mes: "Noviembre" }
-      case 12: return { cant: 31, mes: "Diciembre" }
-    }
+  const getIncomePerMonth = async (year) => {
+    const resp = await incomeService.getIncomePerMonth({ year })
+    setIncomePerMonth(resp)
   }
 
-  const handleDetails = (toggleDetails, mes, selectedYear) => {
-    setShowDetails(toggleDetails)
-    if (mes != -1) {
-      const monthExpenses = expenses.filter((expense) => expense.date.getMonth() === mes && expense.date.getFullYear() === parseInt(selectedYear ? selectedYear : expenses[expenses.length - 1].date.getFullYear()))
-      const expensesPerDay = []
-      for (let i = 0; i < diasDelMes(monthExpenses).cant; i++) {
-        expensesPerDay[i + 1] = { expenses: monthExpenses.filter((expense) => expense.date.getDate() === i + 1), month: diasDelMes(monthExpenses).mes, day: i + 1 }
-      }
-      setDetailsExpensesMonth(expensesPerDay)
-    }
+  const handleSelectedMonth = async (month) => {
+    const resp = await expensesService.getExpensesPerMonth({ month })
+    setMonthExpenses(resp)
+    setSelectedMonth(month)
+    setShowMonthExpenses(true)
   }
+
+  const handleDayExpensesModal = (expenses) => {
+    setShowDayExpenses(true)
+    setDayExpenses(expenses)
+  }
+
+  const getActivity = async () => {
+    const resp = await activityService.get()
+    setActivity(resp)
+  }
+
+  const getTop = async () => {
+    const result = await settingsService.get()
+    setTop(!result.length? 100000 : result[0].value)
+  }
+
+  const handleBalance = async (month) => {
+    const resp = await activityService.getBalance({month, year: parseInt(selectedYear)})
+    console.log(resp);
+    setBalance(resp.balance)
+  }
+
+  const mounted = async () => {
+    await getExpenses()
+    await getActivity()
+    await getAmountsPerMonth(new Date().getFullYear())
+    await getIncomePerMonth(new Date().getFullYear())
+    await getTop()
+    setIsFetching(false)
+  }
+
+  useEffect(() => {
+    mounted()
+  }, [])
+
+
+  const [expenses, setExpenses] = useState()
+  const [activity, setActivity] = useState()
+  const [top, setTop] = useState()
+  const [showTopModal, setShowTopModal] = useState(false)
+  const [isFetching, setIsFetching] = useState(true)
+  const [amountPerMonth, setAmountPerMonth] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+  const [incomePerMonth, setIncomePerMonth] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+  const [balance, setBalance] = useState()
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+  const [selectedMonth, setSelectedMonth] = useState()
+  const [monthExpenses, setMonthExpenses] = useState()
+  const [dayExpenses, setDayExpenses] = useState()
+  const [showMonthExpenses, setShowMonthExpenses] = useState(false)
+  const [showDayExpenses, setShowDayExpenses] = useState(false)
+  const [showNewExpenseModal, setShowNewExpenseModal] = useState(false)
+  const [showNewIncomeModal, setShowNewIncomeModal] = useState(false)
+
+
 
   return (
     <div className='app'>
-      <AddExpense handleOpenModalIncome={handleOpenModalIncome} addNewExpense={handleNewExpense} />
-      <ModalIngresos showModalIncome={showModalIncome} handleCloseModalIncome={handleCloseModalIncome} income={[{eneroIncome, setEneroIncome},{febreroIncome, setFebreroIncome},{marzoIncome, setMarzoIncome},{abrilIncome, setAbrilIncome},{mayoIncome, setMayoIncome},{junioIncome, setJunioIncome},{julioIncome, setJulioIncome},{agostoIncome, setAgostoIncome},{septiembreIncome, setSeptiembreIncome},{octubreIncome, setOctubreIncome},{noviembreIncome, setNoviembreIncome},{diciembreIncome, setDiciembreIncome}, ]}/>
-      <Statistics eneroIncome={eneroIncome} febreroIncome={febreroIncome} marzoIncome={marzoIncome} abrilIncome={abrilIncome} mayoIncome={mayoIncome} junioIncome={junioIncome} julioIncome={julioIncome} agostoIncome={agostoIncome} septiembreIncome={septiembreIncome} octubreIncome={octubreIncome} noviembreIncome={noviembreIncome} diciembreIncome={diciembreIncome} handleDetails={handleDetails} years={expenses.map((expense) => expense.date.getFullYear())} filterExpensesByYear={filterExpensesByYear} expenses={filterExpenses} />
-      {showDetails ? <Details handleDetails={handleDetails} detailsExpensesMonth={detailsExpensesMonth} handleShowModal={handleShowModal} /> : null}
-      <Modal expenses={expensesSelectedDay} month={monthSelectedDay} day={daySelectedDay} showModal={showModal} handleCloseModal={handleCloseModal} />
-      <Expenses expenses={expenses} />
+      <CreateExpense createExpense={createExpense} setShowNewExpenseModal={setShowNewExpenseModal} setShowNewIncomeModal={setShowNewIncomeModal} />
+      <NewExpenseModal createExpense={createExpense} setShowNewExpenseModal={setShowNewExpenseModal} showNewExpenseModal={showNewExpenseModal}/>
+      <NewIncomeModal createIncome={createIncome} setShowNewIncomeModal={setShowNewIncomeModal} showNewIncomeModal={showNewIncomeModal}/>
+      <ModalSetTop top={top} showTopModal={showTopModal} setShowTopModal={setShowTopModal} setTop={setTop}/>
+      {<Statistics handleBalance={handleBalance} isFetching={isFetching} top={top} setShowTopModal={setShowTopModal} handleSelectedMonth={handleSelectedMonth} selectedYear={selectedYear} expenses={expenses} amountPerMonth={amountPerMonth} incomePerMonth={incomePerMonth} handleSelectedYear={handleSelectedYear} /> }
+      {showMonthExpenses ? <Details balance={balance} handleDayExpensesModal={handleDayExpensesModal} monthExpenses={monthExpenses} setShowMonthExpenses={setShowMonthExpenses} /> : null}
+      <Modal showModal={showDayExpenses} dayExpenses={dayExpenses} setShowDayExpenses={setShowDayExpenses}/>
+      {activity?.length === 0? <div style={{textAlign: "center", margin: "2rem"}}><h2>Aun no se registro movimiento</h2><h5 style={{display: "flex", justifyContent: "center"}}>Click en <h5 style={{color: "#b6ff2d", margin: "0 4px"}}> Nuevo Ingreso </h5> o <h5 style={{color: "#ff9b82", margin: "0 4px"}}>Nuevo Gasto</h5> para empezar!</h5></div> : <Expenses isFetching={isFetching} activity={activity} />}
     </div>
+    
   );
 }
 

@@ -1,7 +1,6 @@
 .statistics_container{
-    height: 17rem;
+    height: 272px;
     background-color: rgb(240, 240, 240);
-    padding: 10px;    
     position: relative;
     text-align: center;
 }
@@ -14,28 +13,32 @@
     left: 0px; 
     right: 0px; 
     bottom: 0px;
-    padding: 3px;  
+    padding: 3px;    
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .char_container{
     display: block;
     text-align: center;
     margin: 0 13px;
+    
 }
 
 .inner_charts{
     display: flex;
     align-items: baseline;
+    cursor: pointer;
 }
 
 .month_chart_expense{
-    cursor: pointer;
+    
     border-radius: 3px;
     transform: rotate(180deg);
     margin: 0 5px;
     background-color: #faaf9d;
     width: 45px;
-    height: 170px;
+    height: 0px;
     text-align: center;
 }
 
@@ -50,7 +53,7 @@
     margin: 0 5px;
     background-color: #c8fb68;
     width: 45px;
-    height: 170px;
+    height: 0px;
     text-align: center;
 }
 
@@ -68,3 +71,20 @@
     display: flex;
 }
 
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }

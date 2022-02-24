@@ -1,0 +1,16 @@
+.expenses_container{
+    text-align: center;
+}
+
+.expenses_table{
+    width: 80%;
+    margin: 0 auto !important;
+    font-size: 20px;
+}
+
+@media (max-width: 800px) {
+    .expenses_table{
+        width: 100%;
+        font-size: 15px;
+    }
+}

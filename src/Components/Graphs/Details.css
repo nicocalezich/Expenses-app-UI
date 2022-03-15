@@ -13,3 +13,26 @@
 .title_details{
     margin: 0 0 20px 0;
 }
+
+.data{
+    width: "100%";
+    margin: "18px";
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 13px;
+    
+}
+
+.data li{
+    margin: 0 15px;
+    text-align: left;
+}
+
+@media only screen and (max-width: 770px) {
+
+    .data{
+        display: block;
+    }
+
+}

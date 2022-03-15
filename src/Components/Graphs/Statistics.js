@@ -37,8 +37,9 @@ const Statistics = (props) => {
 
                     }
                 </div>
-                <div style={{ width: "100%", margin: "0 auto", borderBottomStyle: "dashed" }}><h5 style={{ marginBottom: "0px" }}>${props.top}</h5></div>
+                {/* <div style={{ width: "100%", margin: "0 auto", borderBottomStyle: "dashed" }}><h5 style={{ marginBottom: "0px" }}>${props.top}</h5></div> */}
                 <Charts handleBalance={props.handleBalance} top={props.top} incomePerMonth={props.incomePerMonth} handleSelectedMonth={props.handleSelectedMonth} amountPerMonth={props.amountPerMonth} />
+
             </div>
             }
         </div>

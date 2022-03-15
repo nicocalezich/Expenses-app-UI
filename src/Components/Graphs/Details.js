@@ -56,12 +56,12 @@ const Details = (props) => {
         <div className='details_container'>
             <h2 className='title_details'>Sus gastos de {props.monthExpenses.month}</h2>
             {balance(props.balance)}
-            <div style={{ width: "100%", margin: "18px" }}>
-                <span style={{ margin: "0px 15px" }}>Gasto minimo: <b>{minExpent(props.monthExpenses.expenses)}</b></span>
-                <span style={{ margin: "0px 15px" }}>Gasto maximo: <b>{maxExpent(props.monthExpenses.expenses)}</b></span>
-                <span style={{ margin: "0px 15px" }}>Gasto promedio por dia: <b>${getAmountData(props.monthExpenses.expenses).average}</b></span>
-                <span style={{ margin: "0px 15px" }}>Gasto total del mes: <b>${getAmountData(props.monthExpenses.expenses).total}</b></span>
-            </div>
+            <ul className='data'>
+                <li>Gasto maximo: <b>${maxExpent(props.monthExpenses.expenses)}</b></li>
+                <li>Gasto minimo: <b>${minExpent(props.monthExpenses.expenses)}</b></li>
+                <li>Gasto promedio por dia: <b>${getAmountData(props.monthExpenses.expenses).average}</b></li>
+                <li>Gasto total del mes: <b>${getAmountData(props.monthExpenses.expenses).total}</b></li>
+            </ul>
             <div className='calendar row'>
                 {props.monthExpenses.expenses.map((dayData) => <DayBox handleDayExpensesModal={props.handleDayExpensesModal} dayData={dayData} month={props.monthExpenses.month} total={total(dayData)}/>)}
             </div>

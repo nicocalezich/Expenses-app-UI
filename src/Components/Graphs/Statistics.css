@@ -8,14 +8,13 @@
 .charts{
     position: absolute;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: baseline;
     left: 0px; 
     right: 0px; 
     bottom: 0px;
     padding: 3px;    
     overflow-x: auto;
-    white-space: nowrap;
 }
 
 .char_container{

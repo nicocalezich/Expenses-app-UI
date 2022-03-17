@@ -1,6 +1,7 @@
  import React from 'react'
 import './Details.css'
 import DayBox from "./DayBox"
+import formatter from '../../Utils/CurrenctyFormater'
 
 const Details = (props) => {
 
@@ -22,13 +23,13 @@ const Details = (props) => {
 
     const balance = (balance) =>{
         if (balance > 0) {
-            return <h5>Balance general: <span style={{color: "green"}}>+${props.balance}</span></h5>
+            return <h5>Balance general: <span style={{color: "green"}}>+{formatter(props.balance)}</span></h5>
         } 
         if (balance < 0) {
-            return <h5>Balance general: <span style={{color: "red"}}>-${props.balance}</span></h5>
+            return <h5>Balance general: <span style={{color: "red"}}>-{formatter(props.balance)}</span></h5>
         }
 
-        return <h5>Balance general: <span>${props.balance}</span></h5>
+        return <h5>Balance general: <span>{formatter(props.balance)}</span></h5>
        
     }
 
@@ -57,10 +58,10 @@ const Details = (props) => {
             <h2 className='title_details'>Sus gastos de {props.monthExpenses.month}</h2>
             {balance(props.balance)}
             <ul className='data'>
-                <li>Gasto maximo: <b>${maxExpent(props.monthExpenses.expenses)}</b></li>
-                <li>Gasto minimo: <b>${minExpent(props.monthExpenses.expenses)}</b></li>
-                <li>Gasto promedio por dia: <b>${getAmountData(props.monthExpenses.expenses).average}</b></li>
-                <li>Gasto total del mes: <b>${getAmountData(props.monthExpenses.expenses).total}</b></li>
+                <li>Gasto maximo: <b>{formatter(maxExpent(props.monthExpenses.expenses))}</b></li>
+                <li>Gasto minimo: <b>{formatter(minExpent(props.monthExpenses.expenses))}</b></li>
+                <li>Gasto promedio por dia: <b>{formatter(getAmountData(props.monthExpenses.expenses).average)}</b></li>
+                <li>Gasto total del mes: <b>{formatter(getAmountData(props.monthExpenses.expenses).total)}</b></li>
             </ul>
             <div className='calendar row'>
                 {props.monthExpenses.expenses.map((dayData) => <DayBox handleDayExpensesModal={props.handleDayExpensesModal} dayData={dayData} month={props.monthExpenses.month} total={total(dayData)}/>)}

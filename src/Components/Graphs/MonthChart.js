@@ -1,4 +1,5 @@
 import React from "react"
+import formatter from "../../Utils/CurrenctyFormater"
 
 const MonthChart = (props) => {
 
@@ -22,8 +23,8 @@ const MonthChart = (props) => {
     return (
         <div className='char_container'>
             <div className='inner_charts'>
-                <div data-toggle="tooltip" title={`$${getIncome(props.number)}`} className='month_chart_income' style={{ height: getPixelValue(getIncome(props.number)) + "px" }}></div>
-                <div data-toggle="tooltip" title={`$${props.amount}`}onClick={clickedMonth} className='month_chart_expense' style={{ height: getPixelValue(props.amount) + "px" }}></div>
+                <div data-toggle="tooltip" title={`${formatter(getIncome(props.number))}`} className='month_chart_income' style={{ height: getPixelValue(getIncome(props.number)) + "px" }}></div>
+                <div data-toggle="tooltip" title={`${formatter(props.amount)}`}onClick={clickedMonth} className='month_chart_expense' style={{ height: getPixelValue(props.amount) + "px" }}></div>
             </div>
             <span>{props.month}</span> 
         </div>

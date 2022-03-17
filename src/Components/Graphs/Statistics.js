@@ -2,6 +2,7 @@ import React from 'react'
 import Charts from './Charts'
 import SpinBar from '../spinBar'
 import "./Statistics.css"
+import formatter from '../../Utils/CurrenctyFormater'
 
 const Statistics = (props) => {
 
@@ -37,7 +38,7 @@ const Statistics = (props) => {
 
                     }
                 </div>
-                {/* <div style={{ width: "100%", margin: "0 auto", borderBottomStyle: "dashed" }}><h5 style={{ marginBottom: "0px" }}>${props.top}</h5></div> */}
+                <div style={{ width: "100%", margin: "10px 0 0 0", borderBottomStyle: "dashed" }}><h5 style={{ marginBottom: "0px" }}>{formatter(props.top)}</h5></div>
                 <Charts handleBalance={props.handleBalance} top={props.top} incomePerMonth={props.incomePerMonth} handleSelectedMonth={props.handleSelectedMonth} amountPerMonth={props.amountPerMonth} />
 
             </div>

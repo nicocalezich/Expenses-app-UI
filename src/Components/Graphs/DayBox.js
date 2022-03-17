@@ -1,5 +1,6 @@
 import React from "react"
 import "./DayBox.css"
+import formatter from "../../Utils/CurrenctyFormater"
 
 const DayBox = (props) => {
 
@@ -22,7 +23,7 @@ const DayBox = (props) => {
         
         <div style={totalSpentCategorie(props.total)} onClick={() => props.handleDayExpensesModal({expenses: props.dayData.expenses, month: props.month, day: props.dayData.dayNumber})}  className="box col-md-2">
             <h5 className="fecha_daybox">{props.dayData.dayNumber}</h5>
-            {props.total === 0? <h6 className="gastos_daybox">Sin gastos</h6 >: <h5 className="gastos_daybox">${props.total}</h5>}
+            {props.total === 0? <h6 className="gastos_daybox">Sin gastos</h6 >: <h5 className="gastos_daybox">{formatter(props.total)}</h5>}
         </div>
 
     )

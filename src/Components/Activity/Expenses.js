@@ -1,6 +1,6 @@
 import React from 'react'
-import SpinBar from '../spinBar'
 import './Expenses.css'
+import formatter from '../../Utils/CurrenctyFormater'
 
 const Expenses = (props) => {
 
@@ -12,7 +12,7 @@ const Expenses = (props) => {
     const mapActivity = (activity) => {
         return (<tr key={activity._id} style={{ backgroundColor: activity.isExpense ? "#faaf9d" : "#c8fb68" }}>
             <td>{activity.name}</td>
-            <td>{` ${activity.isExpense ? "-" : "+"} $${activity.amount}`}</td>
+            <td>{` ${activity.isExpense ? "-" : "+"} ${formatter(activity.amount)}`}</td>
             <td>{getDate(activity.date)}</td>
         </tr>)
     }

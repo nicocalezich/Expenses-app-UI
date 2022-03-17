@@ -55,11 +55,11 @@ const Modal = (props) => {
                 <form className="container_addexpenses">
                     <div className="inputs_container">
                         <div className="input">
-                            <label>Nombre</label>
-                            <input placeholder="Nombre para identificar el ingreso" onChange={handleName} value={name} type='text' />
+                            <label>Tag</label>
+                            <input placeholder="Tag para identificar el ingreso" onChange={handleName} value={name} type='text' />
                         </div>
                         <div className="input">
-                            <label>Monto del ingreso</label>
+                            <label>Monto</label>
                             <input placeholder="¿Cuanto dinero gano?" onChange={handleAmount} value={amount} type='number' />
                         </div>
                         <div className="input">

@@ -26,11 +26,9 @@ const Details = (props) => {
             return <h5>Balance general: <span style={{color: "green"}}>+{formatter(props.balance)}</span></h5>
         } 
         if (balance < 0) {
-            return <h5>Balance general: <span style={{color: "red"}}>-{formatter(props.balance)}</span></h5>
+            return <h5>Balance general: <span style={{color: "red"}}>{formatter(props.balance)}</span></h5>
         }
-
-        return <h5>Balance general: <span>{formatter(props.balance)}</span></h5>
-       
+        return <h5>Balance general: <span>{formatter(props.balance)}</span></h5>       
     }
 
     const maxExpent = (expenses) => {

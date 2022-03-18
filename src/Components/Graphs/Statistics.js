@@ -1,6 +1,6 @@
 import React from 'react'
 import Charts from './Charts'
-import SpinBar from '../spinBar'
+import SpinBar from '../../Utils/spinBar'
 import "./Statistics.css"
 import formatter from '../../Utils/CurrenctyFormater'
 

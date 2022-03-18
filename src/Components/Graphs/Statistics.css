@@ -5,15 +5,28 @@
     text-align: center;
 }
 
+/* @media only screen and (max-width: 1637px) {
+    .statistics_container{
+        height: 287px;
+    }
+} */
+
 .charts{
     position: absolute;
     display: flex;
     align-items: baseline;
+    justify-content: center;
     left: 0px; 
     right: 0px; 
     bottom: 0px;
     padding: 3px;    
     overflow-x: auto;
+}
+
+@media only screen and (max-width: 770px) {
+    .charts{
+        justify-content:unset;
+    }
 }
 
 .char_container{

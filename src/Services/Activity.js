@@ -1,3 +1,4 @@
+import { createGlobalStyle } from "styled-components";
 import api from "./Api";
 
 const activityService = {
@@ -16,6 +17,11 @@ const activityService = {
         const { data } = await api.post('activity/balance', body)
         return data
     },
+
+    delete: async(id, name, date, isExpense) => {
+        const response = await api.delete(`activity/${id}/${name}/${date}/${isExpense}`)
+        return response
+    }
 }
 
 export default activityService

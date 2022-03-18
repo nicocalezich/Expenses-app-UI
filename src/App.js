@@ -84,6 +84,14 @@ function App() {
     setTop(!result.length? 100000 : result[0].value)
   }
 
+  const deleteActivity = (id, name, date, isExpense) => {
+    const confirmDelete = window.confirm(`¿Seguro que quiere eliminar "${name}"?`)
+    if (confirmDelete){
+        activityService.delete(id, name, date, isExpense)
+    }
+    mounted()
+  }
+
   const handleBalance = async (month) => {
     const resp = await activityService.getBalance({month, year: parseInt(selectedYear)})
     console.log(resp);
@@ -132,7 +140,7 @@ function App() {
       {<Statistics handleBalance={handleBalance} isFetching={isFetching} top={top} setShowTopModal={setShowTopModal} handleSelectedMonth={handleSelectedMonth} selectedYear={selectedYear} expenses={expenses} amountPerMonth={amountPerMonth} incomePerMonth={incomePerMonth} handleSelectedYear={handleSelectedYear} /> }
       {showMonthExpenses ? <Details balance={balance} handleDayExpensesModal={handleDayExpensesModal} monthExpenses={monthExpenses} setShowMonthExpenses={setShowMonthExpenses} /> : null}
       <Modal showModal={showDayExpenses} dayExpenses={dayExpenses} setShowDayExpenses={setShowDayExpenses}/>
-      {activity?.length === 0? <div style={{textAlign: "center", margin: "2rem"}}><h2>Aun no se registro movimiento</h2><h5 style={{display: "flex", justifyContent: "center"}}>Click en <h5 style={{color: "#b6ff2d", margin: "0 4px"}}> Nuevo Ingreso </h5> o <h5 style={{color: "#ff9b82", margin: "0 4px"}}>Nuevo Gasto</h5> para empezar!</h5></div> : <Expenses isFetching={isFetching} activity={activity} />}
+      {activity?.length === 0? <div style={{textAlign: "center", margin: "2rem"}}><h2>Aun no se registro movimiento</h2><h5 style={{display: "flex", justifyContent: "center"}}>Click en <h5 style={{color: "#b6ff2d", margin: "0 4px"}}> Nuevo Ingreso </h5> o <h5 style={{color: "#ff9b82", margin: "0 4px"}}>Nuevo Gasto</h5> para empezar!</h5></div> : <Expenses isFetching={isFetching} activity={activity} deleteActivity={deleteActivity}/>}
     </div>
     
   );
